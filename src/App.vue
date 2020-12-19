@@ -9,39 +9,25 @@
         v-model="query" 
         /> 
         <button @click="fetchWeather">Search for city
-        </button>
-     
+        </button> 
    </div>
 
 <div class="weather-wrap" v-if="typeof weather.main != 'undefined'"> 
        <p>
         {{ weather.name }}, {{ Math.round((weather.main.temp - 273.15) * 9/5 + 35) }}°F,
         {{ describe.description }}
-        <img :src="icon">
-        
+        <img :src="icon"> 
         </p>
         </div>
         </div>
-   <!-- <div class="backgroundTwo"
-   v-if="clouds >= 40"
-   > </div>
-   <div class="backgroundTwo"
-   v-else-if="weather.rain"
-   > </div>
-    <div class="background"
-   v-else
-   > </div> -->
-
-
-       
-​
-         <div class="parallax-container">
-    <div class="parallax-layer layer-0" data-parallax-speed="0.05" data-max-scroll="565"></div>
-    <div class="parallax-layer layer-1" data-parallax-speed="0.1" data-max-scroll="565"></div>
-    <div class="parallax-layer layer-2" data-parallax-speed="0.3" data-max-scroll="565"></div>
-    <div class="parallax-layer layer-3" data-parallax-speed="0.5" data-max-scroll="565"></div>
-    <div class="parallax-layer layer-4" data-parallax-speed="0.7" data-max-scroll="565"></div>
-    <div class="parallax-layer layer-5" data-parallax-speed="0.9" data-max-scroll="565"></div>
+   
+         <div class="background-container">
+    <div class="background-layer layer-0" data-parallax-speed="0.05" data-max-scroll="565"></div>
+    <div class="background-layer layer-1" data-parallax-speed="0.1" data-max-scroll="565"></div>
+    <div class="background-layer layer-2" data-parallax-speed="0.3" data-max-scroll="565"></div>
+    <div class="background-layer layer-3" data-parallax-speed="0.5" data-max-scroll="565"></div>
+    <div class="background-layer layer-4" data-parallax-speed="0.7" data-max-scroll="565"></div>
+    <div class="background-layer layer-5" data-parallax-speed="0.9" data-max-scroll="565"></div>
   </div>
 
     <div 
@@ -96,7 +82,8 @@ export default {
         icon:'',
         background: '#41b9ddd2',
         timeNow: 0,
-        sunSet: 0
+        sunSet: 0,
+        night: ' #343636d2'
         }
     },
     methods: {
@@ -118,11 +105,15 @@ export default {
             this.setBackground()
         },
         setBackground: function(){
-          if(this.clouds >= 40){
-              this.background = '#7c8e94d2'
+
+
+          if(this.sunSet < this.timeNow){
+              this.background = ' #2a2a35'
           } else if (this.weather.rain){
               this.background = '#7c8e94d2'
-          } else {
+          } else if (this.clouds >= 40){
+              this.background = '#7c8e94d2'
+          }else {
               this.background = '#41b9ddd2'
           }
           console.log(this.background)
@@ -136,18 +127,21 @@ export default {
 
 <style lang="scss">
 
+* { margin: 0 !important; }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #030303;
-    width: 99vw;
-     position: absolute;
+  color: #f7f3f3;
+    width: 100vw;
+    height: 100vh;
+     position: fixed;
       background-color: rgba(65, 185, 221, 0.822);
+      //background-color: #2a2a36b0 ;
+      background-size: 100%;
   transition: 0.4s;
-  //  min-height: 353px;
-  height: 99vh;
    z-index: -1;
 }
 
@@ -183,7 +177,7 @@ a {
   position: relative;
 }
 
-.parallax-layer {
+.background-layer {
   width: 100%;
   height: 95%; 
   position: fixed;
@@ -197,6 +191,7 @@ a {
     top: 10px;
     z-index: 1;
     background-image: url('./img/layer-1.png');
+    overflow: hidden;
   }
   /* .layer-2 {
     top: -50px;
@@ -212,13 +207,14 @@ a {
   .layer-4 {
     top: 70px;
     z-index: 4;
-
       background-image: url('./img/layer-5.png');
+      overflow: hidden;
   }
   .layer-5 {
     top: 110px;
     z-index: 5;
     background-image: url('./img/layer-4.png');
+    overflow: hidden;
   }
 
 .theSun {
@@ -409,7 +405,7 @@ $rain: 150;
     padding: 0 1em 0 1em;
     font-size: 1.5rem;
   }
-.parallax-layer {
+.background-layer {
   width: 100vw;
   height: 100vh;
   
@@ -427,15 +423,15 @@ $rain: 150;
 @media screen and (max-height: 820px) {
  h1, h2 {
     padding-top: 2em;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
 
   p {
     padding: 0 1em 0 1em;
-    font-size: .75rem;
+    font-size: 1rem;
   }
 
-  .parallax-layer {
+  .background-layer {
   width: 100vw;
   height: 100vh;
   
@@ -454,14 +450,19 @@ $rain: 150;
   }
 }
 
-@media screen and (max-width: 650px) {
 
 
-  
+@media screen and (max-width: 650px)  {
+
+ .background-layer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  background-position: bottom center;
+  background-repeat: repeat-x;
+  background-size: 100vw 50%;
 }
-
-@media screen and (max-width: 420px) {
-
  .layer-1 {
     top: 20px;
     z-index: 1;
@@ -526,6 +527,32 @@ $rain: 150;
 	background-image: radial-gradient(45px 45px 45deg, circle cover,rgb(209, 209, 204) 0%, rgb(161, 160, 158) 100%, rgb(107, 105, 105) 95%);
 }
 
+}
+
+@media screen and (max-width: 420px)  {
+.background-layer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  background-position: bottom center;
+  background-repeat: repeat-x;
+  background-size: 180vw 50%;
+}
+
+
+  .clouds {
+    position: absolute;
+    bottom: 14%;
+    left: 0;
+    width: 1080px; 
+    overflow: hidden;
+  }
+
+  .clouds img{
+    height: 300px;
+    width: 1080px;
+  }
 }
 
 
