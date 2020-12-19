@@ -1,4 +1,7 @@
 <template>
+<!-- rain effect borrowed from https://codepen.io/jerrylow/pen/KaPvNa -->
+<!-- snow effect borrowed from https://codepen.io/alphardex/pen/dyPorwJ  -->
+<!--  -->
   <div id="app"
   :style="{ 'background-color': background }">
 <div class="input">
@@ -139,7 +142,6 @@ export default {
     height: 100vh;
      position: fixed;
       background-color: rgba(65, 185, 221, 0.822);
-      //background-color: #2a2a36b0 ;
       background-size: 100%;
   transition: 0.4s;
    z-index: -1;
