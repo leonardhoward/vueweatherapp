@@ -461,9 +461,10 @@ $rain: 150;
   height: 100vh;
   position: fixed;
   left: 0;
-  background-position: center center;
+  top: 0;
+  background-position: bottom center;
   background-repeat: repeat-x;
-  background-size: 100vw 70%;
+  background-size: 100% 100%;
 }
  .layer-1 {
     top: 20px;
