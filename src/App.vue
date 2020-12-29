@@ -396,6 +396,18 @@ $rain: 150;
   }
 }
 
+@media screen and (orientation: landscape) {
+  .background-layer {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  background-position: top center;
+  background-repeat: repeat-x;
+  background-size: 100vw 40%;
+}
+}
+
 @media screen and (max-width: 1370px) {
 
   h1, h2 {
@@ -410,10 +422,8 @@ $rain: 150;
 .background-layer {
   width: 100vw;
   height: 100vh;
-  
   position: fixed;
   left: 0;
- 
   background-position: bottom center;
   background-repeat: repeat-x;
   background-size: 100vw 40%;
@@ -436,10 +446,8 @@ $rain: 150;
   .background-layer {
   width: 100vw;
   height: 100vh;
-  
   position: fixed;
   left: 0;
- 
   background-position: bottom center;
   background-repeat: repeat-x;
   background-size: 100vw 50%;
