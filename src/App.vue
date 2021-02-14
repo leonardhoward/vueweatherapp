@@ -6,7 +6,7 @@
   :style="{ 'background-color': background }">
 <div class="input">
 <h1> Weather App </h1>
-<p> Search the name of a city or a town to check the current weather! </P>
+<p> Search the name of a city or a town to check the current weather! </p>
   <div class="input">
     <input type="text" placeholder="city/town name"
         v-model="query" 
@@ -16,14 +16,18 @@
    </div>
 
 <div class="weather-wrap" v-if="typeof weather.main != 'undefined'"> 
-       <p>
+
+       <div>          
         {{ weather.name }}, {{ Math.round((weather.main.temp - 273.15) * 9/5 + 35) }}°F,
         {{ describe.description }}
         <img :src="icon"> 
+        </div>
+        </div>
+        </div>
 
-        </p>
-        </div>
-        </div>
+         <div v-if= "notSet"> 
+    Oops! City was not found. Please check the city's spelling and try again.
+    </div>
    
          <div class="background-container">
     <div class="background-layer layer-0" data-parallax-speed="0.05" data-max-scroll="565"></div>
@@ -81,7 +85,8 @@ export default {
         return {
         url_base: 'https://api.openweathermap.org/data/2.5/',
         api: '69f11ed696371e9d14b77fc98b82349c',
-        weather: {},
+        weather: '',
+        notSet: false,
         query:'',
         showClouds: false,
         clouds: 10,
@@ -101,7 +106,9 @@ export default {
                 .then(res =>  {
                     return res.json();
                 }).then(this.setResults)
-            
+                  if(!this.weather.startsWith("#")){
+                    this.notSet = true
+                  } 
         },
         setResults: function(results){
             this.weather= results
@@ -111,6 +118,8 @@ export default {
             this.timeNow= this.weather.dt
             this.sunSet= this.weather.sys.sunset
             this.setBackground()
+            this.notSet = false
+          
         },
         setBackground: function(){
 
@@ -456,6 +465,16 @@ $rain: 150;
 
 @media screen and (max-width: 850px)  {
 
+   h1, h2 {
+    padding-top: .5em;
+    font-size: 1.7rem;
+  }
+
+  p {
+    padding: 0 1em 0 1em;
+    font-size: 1rem;
+  }
+
  .background-layer {
   width: 100vw;
   height: 100vh;
@@ -464,7 +483,7 @@ $rain: 150;
   top: 0;
   background-position: bottom center;
   background-repeat: repeat-x;
-  background-size: 100% 100%;
+  background-size: 100% 80%;
 }
  .layer-1 {
     top: 20px;
@@ -535,6 +554,16 @@ $rain: 150;
 
 
 @media screen and (max-width: 420px)  {
+ h1, h2 {
+    padding-top: 2em;
+    font-size: 1.7rem;
+  }
+
+  p {
+    padding: 0 1em 0 1em;
+    font-size: 1rem;
+  }
+
 .background-layer {
   width: 100vw;
   height: 100vh;
