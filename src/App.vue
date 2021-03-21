@@ -11,7 +11,7 @@
     <input type="text" placeholder="city/town name"
         v-model="query" 
         /> 
-        <button @click="fetchWeather">Search for city
+        <button @click="fetchWeather();">Search for city
         </button> 
    </div>
 
@@ -25,9 +25,9 @@
         </div>
         </div>
 
-         <div v-if= "notSet"> 
-    Oops! City was not found. Please check the city's spelling and try again.
-    </div>
+        <p class = "errorMessage" v-if="errorSet === true">Oops! The city was not found. Please check the spelling and try again.</p>
+   
+
    
          <div class="background-container">
     <div class="background-layer layer-0" data-parallax-speed="0.05" data-max-scroll="565"></div>
@@ -86,7 +86,8 @@ export default {
         url_base: 'https://api.openweathermap.org/data/2.5/',
         api: '69f11ed696371e9d14b77fc98b82349c',
         weather: '',
-        notSet: false,
+        errorSet: false,
+        message:'',
         query:'',
         showClouds: false,
         clouds: 10,
@@ -99,18 +100,29 @@ export default {
         night: ' #343636d2'
         }
     },
+
+     
+
     methods: {
         fetchWeather: function(e){
             
                 fetch(`${this.url_base}weather?q=${this.query}&appid=${this.api}`)
                 .then(res =>  {
+                  if(res.status == 404){
+                     this.errorSet = true
+                     console.log(this.errorSet)
+                  }else{
+                    this.errorSet = false
+                     console.log(this.errorSet)
                     return res.json();
-                }).then(this.setResults)
-                  if(!this.weather.startsWith("#")){
-                    this.notSet = true
                   } 
+                }).then(this.setResults)
+           
+
         },
+
         setResults: function(results){
+           
             this.weather= results
             this.clouds= Object.values(this.weather.clouds).pop()
             this.describe= Object.values(this.weather.weather).pop()
@@ -118,12 +130,11 @@ export default {
             this.timeNow= this.weather.dt
             this.sunSet= this.weather.sys.sunset
             this.setBackground()
-            this.notSet = false
-          
+            
+             return true
         },
+     
         setBackground: function(){
-
-
           if(this.sunSet < this.timeNow){
               this.background = ' #2a2a35'
           } else if (this.weather.rain){
@@ -133,12 +144,17 @@ export default {
           }else {
               this.background = '#41b9ddd2'
           }
-          console.log(this.background)
+        },
+        setError: function(){
+           if(this.weather.startsWith("#")){
+                 this.errorSet = false
+                 console.log(this.errorSet)
+                       } else {
+                         this.errorSet = true
+                       }
         }
-       
-        
     }
- 
+       
 }
 </script>
 
@@ -186,7 +202,10 @@ a {
   color: #42b983;
 }
 
-
+.errorMessage{
+  z-index: 30;
+  position: relative;
+}
 
 .input {
   z-index: 30;
